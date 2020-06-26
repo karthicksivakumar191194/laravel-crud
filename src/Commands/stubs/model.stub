@@ -1,0 +1,12 @@
+<?php
+
+namespace App;
+
+use LaraSnap\LaravelAdmin\Models\BaseModel;
+use LaraSnap\LaravelAdmin\Traits\Filter;
+
+class DummyCRUD extends BaseModel
+{
+    use Filter;
+
+}

@@ -1,0 +1,113 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\DummyCRUD;
+use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\DummyCRUDRequest;
+use App\Http\Services\DummyCRUDService;
+
+class DummyCRUDController extends Controller
+{
+    private $DummyServiceVariable;
+
+	/**
+	* Injecting DummyCRUDService.
+	*/
+    public function __construct(DummyCRUDService $DummyServiceVariable)
+    {
+        $this->DummyServiceVariable = $DummyServiceVariable;
+    }
+    
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
+    {
+        $filter_request = $this->DummyServiceVariable->filterValue($request); //filter request
+        $DummyNamePlural = $this->DummyServiceVariable->index($filter_request);
+
+        return view('DummyNameView.index')->with(['DummyNamePlural' => $DummyNamePlural, 'filters' => $filter_request]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        return view('DummyNameView.create');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  DummyCRUDRequest $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(DummyCRUDRequest $request)
+    {
+        $this->DummyServiceVariable->store($request);
+		
+		return redirect()->route('DummyNameSnakePlural.index')->withSuccess('Resource successfully created.');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        try {
+			$DummyNameSingular = DummyCRUD::findOrFail($id);
+		}catch (ModelNotFoundException $exception) {
+			return redirect()->route('DummyNameSnakePlural.index')->withError('Resource not found by ID ' .$id);
+		}
+        return view('DummyNameView.edit', compact('DummyNameSingular'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  DummyCRUDRequest  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(DummyCRUDRequest $request, $id)
+    {
+        $this->DummyServiceVariable->update($request, $id);
+		
+		return redirect()->route('DummyNameSnakePlural.index')->withSuccess('Resource successfully updated.');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $this->DummyServiceVariable->destroy($id);
+		
+		return redirect()->route('DummyNameSnakePlural.index')->withSuccess('Resource successfully deleted.');
+    }
+}

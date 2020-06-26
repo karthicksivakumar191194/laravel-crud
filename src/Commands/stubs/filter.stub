@@ -1,0 +1,14 @@
+<?php
+namespace App\Http\Filters;
+
+use LaraSnap\LaravelAdmin\Filters\Filters;
+
+class DummyCRUDFilters extends Filters
+{
+    public function search($term = '') {
+        if($term != '') {
+            return $this->builder->where('label', 'LIKE', "%$term%");
+        }
+    }
+
+}

@@ -1,0 +1,11 @@
+Route::group(['middleware' => ['auth', 'check-userstatus', 'check-roles'] ], function(){
+    Route::group(['prefix' => 'admin/DummyNameSnakePlural', 'exculde' => ['DummyNameSnakePlural.filter', 'DummyNameSnakePlural.store', 'DummyNameSnakePlural.update']], function(){
+        Route::get('/','DummyCRUDController@index')->name('DummyNameSnakePlural.index');
+        Route::post('/','DummyCRUDController@index')->name('DummyNameSnakePlural.filter');
+        Route::get('create','DummyCRUDController@create')->name('DummyNameSnakePlural.create');
+        Route::post('create','DummyCRUDController@store')->name('DummyNameSnakePlural.store');
+        Route::get('{DummyNameSnakeSingular}/edit','DummyCRUDController@edit')->name('DummyNameSnakePlural.edit');
+        Route::put('{DummyNameSnakeSingular}','DummyCRUDController@update')->name('DummyNameSnakePlural.update');
+        Route::delete('{DummyNameSnakeSingular}','DummyCRUDController@destroy')->name('DummyNameSnakePlural.destroy');
+    });
+});

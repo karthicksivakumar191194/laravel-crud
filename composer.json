@@ -1,0 +1,26 @@
+{
+    "name": "larasnap/laravel-crud",
+    "description": "CRUD Generator for LaraSnap Admin",
+    "keywords":["laravel", "larasnap"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Karthick Sivakumar",
+            "email": "karthicksivakumardev@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+	"autoload": {
+        "psr-4": {
+            "LaraSnap\\LaravelCrud\\": "src/"
+        }
+    },
+    "require": {},
+    "extra": {
+    "laravel": {
+      "providers": [
+        "LaraSnap\\LaravelCrud\\LaravelCrudServiceProvider"
+      ]
+    }
+  }
+}
