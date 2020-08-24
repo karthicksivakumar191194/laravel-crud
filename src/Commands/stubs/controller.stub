@@ -28,6 +28,8 @@ class DummyCRUDController extends Controller
      */
     public function index(Request $request)
     {
+		setCurrentListPageURL('DummyNamePlural');
+		
         $filter_request = $this->DummyServiceVariable->filterValue($request); //filter request
         $DummyNamePlural = $this->DummyServiceVariable->index($filter_request);
 
@@ -93,9 +95,16 @@ class DummyCRUDController extends Controller
      */
     public function update(DummyCRUDRequest $request, $id)
     {
-        $this->DummyServiceVariable->update($request, $id);
-		
-		return redirect()->route('DummyNameSnakePlural.index')->withSuccess('Resource successfully updated.');
+		try {
+			$DummyNameSingular = DummyCRUD::findOrFail($id);
+			$this->DummyServiceVariable->update($request, $id);
+			$listPageURL = getPreviousListPageURL('DummyNamePlural') ?? route('DummyNameSnakePlural.index'); 
+			
+			return redirect($listPageURL)->withSuccess('Resource successfully updated.');
+		}catch (ModelNotFoundException $exception) {
+			return redirect()->route('DummyNameSnakePlural.index')->withError('Resource not found by ID ' .$id);
+		}	
+	
     }
 
     /**
